@@ -1,7 +1,4 @@
-const AGRESSOR = {
-  VIKING: "VIKING",
-  SAXON: "SAXON"
-}
+
 
 // Soldier
 class Soldier {
@@ -108,45 +105,31 @@ class War {
     this.saxonArmy.push(saxon);
   }
 
-  getRandomSaxonAndViking(){
-    const viking = this.vikingArmy[Math.floor(Math.random() * this.vikingArmy.length)];
-    const saxon = this.saxonArmy[Math.floor(Math.random() * this.saxonArmy.length)];
-    return [viking, saxon]
-  }
-
   /**
    *
-   * @param {(Viking|Saxon)} attacker
-   * @param {(Viking|Saxon)} defender
-   * @param {string} attackerType
+   * @param {(Viking[]|Saxon[])} attacker
+   * @param {(Viking[]|Saxon[])} defender
    * @returns {string}
    */
-  dealDamage(agressor, defender, attackerClass){
+  dealDamage(agressorArmy, defenderArmy){
+
+    const agressor = agressorArmy[Math.floor(Math.random() * agressorArmy.length)];
+    const defender = defenderArmy[Math.floor(Math.random() * defenderArmy.length)];
+
     const message = defender.receiveDamage(agressor.attack());
     
     if(message.includes("died")){
-      switch(attackerClass){
-        case AGRESSOR.VIKING:
-          this.saxonArmy.splice(this.saxonArmy.indexOf(defender), 1)
-          break
-        case AGRESSOR.SAXON:
-          this.vikingArmy.splice(this.vikingArmy.indexOf(defender), 1)
-          break
-        default:
-          break
-      }
+      defenderArmy.splice(defenderArmy.indexOf(defender), 1)
     }
     
     return message
   }
 
   vikingAttack() {
-    const [viking, saxon] = this.getRandomSaxonAndViking()
-    return this.dealDamage(viking, saxon, AGRESSOR.VIKING)
+    return this.dealDamage(this.vikingArmy, this.saxonArmy)
   }
   saxonAttack() {
-    const [viking, saxon] = this.getRandomSaxonAndViking()
-    return this.dealDamage(saxon, viking, AGRESSOR.SAXON)
+    return this.dealDamage(this.saxonArmy, this.vikingArmy)
   }
   showStatus() {
     if (this.saxonArmy.length === 0){
