@@ -25,7 +25,7 @@ class Soldier {
    * @param {number} damage
    */
   receiveDamage(damage){
-    this.health = this.health - damage;
+    this.health -= damage;
   }
 }
 
