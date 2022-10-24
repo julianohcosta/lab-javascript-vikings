@@ -1,3 +1,8 @@
+const AGRESSOR = {
+  VIKING: "VIKING",
+  SAXON: "SAXON"
+}
+
 // Soldier
 class Soldier {
   /**
@@ -116,25 +121,32 @@ class War {
    * @param {string} attackerType
    * @returns {string}
    */
-  dealDamage(attacker, defender, attackerType){
-    const message = defender.receiveDamage(attacker.attack());
+  dealDamage(agressor, defender, attackerClass){
+    const message = defender.receiveDamage(agressor.attack());
+    
     if(message.includes("died")){
-      if (attackerType === 'viking'){
-        this.saxonArmy.splice(this.saxonArmy.indexOf(defender), 1)
-      } else if (attackerType === 'saxon'){
-        this.vikingArmy.splice(this.vikingArmy.indexOf(defender), 1)
+      switch(attackerClass){
+        case AGRESSOR.VIKING:
+          this.saxonArmy.splice(this.saxonArmy.indexOf(defender), 1)
+          break
+        case AGRESSOR.SAXON:
+          this.vikingArmy.splice(this.vikingArmy.indexOf(defender), 1)
+          break
+        default:
+          break
       }
     }
+    
     return message
   }
 
   vikingAttack() {
     const [viking, saxon] = this.getRandomSaxonAndViking()
-    return this.dealDamage(viking, saxon, 'viking')
+    return this.dealDamage(viking, saxon, AGRESSOR.VIKING)
   }
   saxonAttack() {
     const [viking, saxon] = this.getRandomSaxonAndViking()
-    return this.dealDamage(saxon, viking, 'saxon')
+    return this.dealDamage(saxon, viking, AGRESSOR.SAXON)
   }
   showStatus() {
     if (this.saxonArmy.length === 0){
