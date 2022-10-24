@@ -118,7 +118,7 @@ class War {
 
     const message = defender.receiveDamage(agressor.attack());
     
-    if(message.includes("died")){
+    if(defender.health <= 0){
       defenderArmy.splice(defenderArmy.indexOf(defender), 1)
     }
     
